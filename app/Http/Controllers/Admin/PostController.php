@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Post;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -14,8 +16,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-        return "Post List Controller";
+        $title = 'Blog Post Management';
+        $posts = \DB::table('posts')->get();
+        return view('admin.posts.index', compact('posts', 'title'));
     }
 
     /**

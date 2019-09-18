@@ -11,9 +11,6 @@ class BlogController extends Controller
     public function index()
     {
         $posts = DB::table('posts')->get();
-        // $posts = DB::table('posts')
-        //        ->orderBy('id', 'desc')
-        //        ->get();
         $title = 'Hello there! It’s a Blog!';
         return view('blog.index', compact('posts', 'title'));
     }
