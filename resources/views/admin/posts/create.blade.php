@@ -1,82 +1,82 @@
 @extends('layouts.admin')
-
 <!-- Breadcrumbs-->
 @section('breadcrumb')
-  @include('layouts.partials.admin._breadcrumb')
+  @include('layouts.partials.admin._breadcrumb', ['title' => $title, 'url'=>'admin/posts'])
 @endsection
 @section('content')
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">{{ $title }}</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <a href="{{ route('posts.index') }}" title="All posts">
-                <button class="btn btn-sm btn-outline-success"><span data-feather="arrow-left"></span>
-                     Go Back</button>
-            </a>
-            <button class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
+<div class="w-11/12 mx-auto">
+  <div class="bg-white shadow-md rounded my-6">
+    <form class="w-full">
+        
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full px-3">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-title">
+                Title
+            </label>
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-title" type="text" placeholder="Enter Title">
+            </div>
         </div>
-    </div>
-    
-    @if (Session::get('errors') != Null)
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{  $errors->first() }}
+
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full px-3">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                Content
+            </label>
+            <textarea class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-content">
+            </textarea>
+            
+            </div>
         </div>
-    @endif
-  
-    
-    <form action="{{ route('posts.store') }}" method="post">
-            @csrf
-            <div class="card">
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input name="title" class="form-control" type="text" value="" required>
-                        @error('title')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="content">Content</label>
-                        <textarea name="content" class="form-control" rows="10"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="category_id">Select Category</label>
-                        <select name="category_id" class="form-control selectpicker">
-                            @foreach($categories as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select name="status" class="form-control selectpicker">
-                            @foreach($status as $key => $value)
-                                <option value="{{ $key }}">{{$value}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                </div>
-
-                <div class="card-footer text-muted">
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-primary"><span data-feather="save"></span> Save</button>
-                    </div>
+        <div class="flex flex-wrap -mx-3 mb-2">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-status">
+                Status
+            </label>
+            <div class="relative">
+                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-status">
+                <option>New Mexico</option>
+                <option>Missouri</option>
+                <option>Texas</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                 </div>
             </div>
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-category">
+                Category
+            </label>
+            <div class="relative">
+                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category">
+                <option>New Mexico</option>
+                <option>Missouri</option>
+                <option>Texas</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+            </div>
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-active">
+                Active
+            </label>
+
+            <input class="mr-2 leading-tight" type="checkbox" id="grid-active">
+            <span class="text-sm">
+                Active
+            </span>
+        </div>
+
+    <div class="md:flex md:items-center mb-2 mt-2 mx-auto">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+  Save
+</button>
+        
+       
+    </div>
     </form>
-    
+</div>
+</div>   
 @endsection

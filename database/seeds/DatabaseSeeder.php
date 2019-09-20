@@ -9,16 +9,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        $this->call(UsersTableSeeder::class);
-    }
-
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+    
     public function run()
     {
         \DB::table('users')->truncate();
@@ -27,8 +18,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersTableSeeder::class,
+            CategoriesSeeder::class,
             PostsTableSeeder::class,
-            CategoriesTableSeeder::class,
+            
         ]);
     }
 }

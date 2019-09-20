@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Enums\PostType;
 
-class RenameTableTestsToCategories extends Migration
+class AddStatusFieldToPosts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +14,8 @@ class RenameTableTestsToCategories extends Migration
      */
     public function up()
     {
-        Schema::table('tests', function (Blueprint $table) {
-            Schema::rename('tests', 'categories');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->tinyInteger('status')->unsigned()->default(PostType::Draft);
         });
     }
 
@@ -25,8 +26,8 @@ class RenameTableTestsToCategories extends Migration
      */
     public function down()
     {
-        Schema::table('tests', function (Blueprint $table) {
-            //
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }

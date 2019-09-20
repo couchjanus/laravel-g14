@@ -4,6 +4,7 @@
 
 use App\Post;
 use Faker\Generator as Faker;
+use App\Enums\PostType;
 
 $factory->define(Post::class, function (Faker $faker) {
     $categoriesIds = \DB::table('categories')->pluck('id');
@@ -15,6 +16,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'published' => $faker->randomElement($array = array (true,false)), // true
         'votes' => $faker->randomDigit(),
         'category_id' => $faker->randomElement($array = $categoriesIds), // 
-        'user_id' =>  $faker->randomElement($array = $usersIds) // 
+        'user_id' =>  $faker->randomElement($array = $usersIds),
+        'status' => $faker->randomElement($array = PostType::getValues()),
     ];
 });

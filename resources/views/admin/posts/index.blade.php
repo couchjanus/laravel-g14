@@ -1,5 +1,8 @@
 @extends('layouts.admin')
-
+<!-- Breadcrumbs-->
+@section('breadcrumb')
+  @include('layouts.partials.admin._breadcrumb', ['title' => $title, 'url'=>'admin/posts'])
+@endsection
 @section('content')
 <div class="w-11/12 mx-auto">
   <div class="bg-white shadow-md rounded my-6">

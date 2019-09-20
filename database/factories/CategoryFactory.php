@@ -9,6 +9,6 @@ $factory->define(Category::class, function (Faker $faker) {
     return [
         'name' => $faker->word($nb = 3),
         'description' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-        'votes' => $faker->randomDigit(),
+        'active' => $faker->randomElement($array = array ('yes', 'no'))
     ];
 });

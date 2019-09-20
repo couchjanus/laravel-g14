@@ -30,7 +30,8 @@ Route::namespace('Admin')
 	->group(function () {
         Route::get('/', 'DashboardController'); 	 
         Route::resource('posts', 'PostController');
-    	Route::resource('users', 'UsersController');
+        Route::resource('categories', 'CategoryController');
+    	Route::resource('users', 'UserController');
 });
 
 // Route::get('about', 'AboutController')->name('about');

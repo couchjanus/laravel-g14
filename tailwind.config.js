@@ -414,11 +414,14 @@ module.exports = {
       '40': '40',
       '50': '50',
     },
+    
   },
   variants: {
   	appearance: ['responsive'],
     backgroundColors: ['responsive', 'hover', 'focus'],
     fill: [],
   },
-  plugins: []
+  plugins: [
+    require('tailwindcss-plugins/pagination'),
+  ]
 }
