@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Enums\PostType;
 
 class BlogController extends Controller
 {
-
     public function index()
     {
-        $posts = DB::table('posts')->get();
         $title = 'Hello there! It’s a Blog!';
+        $posts = DB::table('posts')
+            ->where('status', PostType::Published)
+            ->orderBy('updated_at', 'desc')
+            ->simplePaginate(5);
         return view('blog.index', compact('posts', 'title'));
     }
 
@@ -31,6 +34,7 @@ class BlogController extends Controller
         return view('blog.show', ['post' => $post]);
     }
 
+
     public function oldestPost()  {
         $post = DB::table('posts')
             ->oldest()
@@ -40,15 +44,24 @@ class BlogController extends Controller
     }
 
 
- 
+    // public function show($id)
+    // {
+    //     $post = DB::table('posts')->where('id', $id)->first();
+    //     return view('blog.show', ['post' => $post]);
+    // }
 
-
-    public function show($id)
+    public function show($slug)
     {
-        $post = DB::table('posts')->where('id', $id)->first();
-        return view('blog.show', ['post' => $post]);
+        if (is_numeric($slug)) {
+            // Get post for slug.
+            $post = Post::findOrFail($slug);
+            return Redirect::to(route('blog.show', $post->slug), 301);
+            // 301 редирект со старой страницы, на новую.   
+        }
+        $post = DB::table('posts')->where('slug', $slug)->first();
+        // $post = Post::whereSlug($slug)->firstOrFail();
+        return view('blog.show', ['post' => $post, 'hascomment'=>true]);
     }
-
 
     public function getPosts()
     {

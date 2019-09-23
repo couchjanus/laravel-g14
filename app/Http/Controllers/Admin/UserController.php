@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate();
+        return view('admin.users.index', ['title' => 'Users Management', 'users' => $users]);
     }
 
     /**
@@ -41,10 +43,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
         //
     }
@@ -52,10 +54,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
         //
     }
@@ -64,10 +66,10 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -75,11 +77,42 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('admin.users.index');
+    }
+
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->paginate();
+        $title = 'Trashed Users';
+        return view('admin.users.trashed', compact('title', 'users'));
+    }
+
+    public function restore($id)
+    {
+        User::withTrashed()
+            ->where('id', $id)
+            ->restore();
+
+        return redirect(route('admin.users.trashed'));
+    }
+
+    public function userDestroy($id)
+    {
+        $user = User::withTrashed()
+                ->findOrFail($id);
+        $user->forceDelete();
+        return redirect()->route('admin.users.index');
+    }
+    
+    public function force($id)
+    {
+        User::trash($id)->forceDelete();
+        return redirect()->route('admin.users.index');
     }
 }

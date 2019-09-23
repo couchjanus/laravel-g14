@@ -24,7 +24,31 @@
       </a>
     </div>
     <div>
-      <a href="{{url()->previous()}}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Go Back</a>
+    @isset($statusTypes)
+      <div class="relative inline-block">
+        <button onclick="toggleDD('postStatus')" class="drop-button text-white focus:outline-none"> <span class="pr-2"><i class="em em-robot_face"></i></span> Status <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></button>
+
+        <div id="postStatus" class="dropdownlist absolute bg-gray-900 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+          <form id="status-form" action="{{ route('admin.posts.status') }}" method="GET" style="display: none;">
+            <input type="hidden" id="post-status" name="status" value="">
+          </form>
+
+          @foreach($status as $key => $value)
+             <a class="profile-list-item" href=""
+               onclick="event.preventDefault();
+                 document.getElementById('post-status').value={{ $key }};
+                 document.getElementById('status-form').submit();">
+                 {{$value}} <i class="fa fa-cog fa-fw"></i>
+             </a>
+          @endforeach
+      </div>
+      @endisset
+      @isset($back)
+        <a href="{{url($url)}}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Go Back</a>
+      @endisset
+      @isset($trash)
+        <a href="{{url($url)}}/trashed" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Trashed</a>
+      @endisset
       <a href="{{url($url)}}/create" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Add New</a>
     </div>
   </div>

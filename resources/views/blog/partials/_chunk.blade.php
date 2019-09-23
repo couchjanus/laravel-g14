@@ -7,10 +7,13 @@
             <div class="date meta-last">{{ $post->created_at }}</div>
             <div class="category"><a href="#">{{ $post->category_id }}</a></div>
           </div>
-          <a href="/blog/{{ $post->id }}">
+          <a href="/blog/{{ $post->slug }}">
             <h3 class="h4">{{ $post->title }}</h3>
           </a>
           
-          <p class="text-muted">{{ Str::limit($post->content, 50)}}</p>
+          <p class="text-muted">{{ Str::limit($post->content, 50)}} <a href="{!! route('blog.show', $post->slug) !!}"
+         class="">Continue reading</a></p>
+          
         </div>
       </div>
+     

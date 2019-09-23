@@ -16,12 +16,9 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'blog'], function () {
-    Route::get('/', 'BlogController@index')->name('blog');
-    Route::get('/create', 'BlogController@create')->name('create');
-    Route::post('/create', 'BlogController@store')->name('store');
-    Route::get('/{id}/edit', 'BlogController@edit')->name('edit');
-    Route::post('/{id}/edit', 'BlogController@update')->name('update');
-    Route::get('/{id}', 'BlogController@show')->name('show');
+    Route::get('/', 'BlogController@index')->name('blog.index');
+    // Route::get('/{id}', 'BlogController@show')->name('show');
+    Route::get('/{slug}', 'BlogController@show')->name('blog.show');
 });
 
 Route::namespace('Admin')
@@ -29,8 +26,13 @@ Route::namespace('Admin')
     ->as('admin.')
 	->group(function () {
         Route::get('/', 'DashboardController'); 	 
+        Route::get('posts/status', 'PostController@getPostsByStatus')->name('posts.status'); 	 
+        
         Route::resource('posts', 'PostController');
         Route::resource('categories', 'CategoryController');
+        Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
+        Route::post('users/restore/{id}', 'UserController@restore')->name('users.restore');
+        Route::delete('users/force/{id}', 'UserController@force')->name('users.force');
     	Route::resource('users', 'UserController');
 });
 
