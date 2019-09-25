@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create', ['title' => 'Add New User']);
     }
 
     /**
@@ -37,9 +38,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->route('admin.users.index')->with('success', 'User Created Successfully!');
     }
 
+
+    /**
+     * Обновление пароля пользователя.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updatePassword(Request $request)
+    {
+        // Проверка длины пароля...
+
+        $request->user()->fill([
+        'password' => Hash::make($request->newPassword)
+        ])->save();
+    }
+ 
     /**
      * Display the specified resource.
      *

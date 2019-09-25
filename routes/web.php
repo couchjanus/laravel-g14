@@ -17,17 +17,15 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'BlogController@index')->name('blog.index');
-    // Route::get('/{id}', 'BlogController@show')->name('show');
     Route::get('/{slug}', 'BlogController@show')->name('blog.show');
 });
 
-Route::namespace('Admin')
+Route::middleware('admin')->namespace('Admin')
     ->prefix('admin')
     ->as('admin.')
 	->group(function () {
         Route::get('/', 'DashboardController'); 	 
         Route::get('posts/status', 'PostController@getPostsByStatus')->name('posts.status'); 	 
-        
         Route::resource('posts', 'PostController');
         Route::resource('categories', 'CategoryController');
         Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
@@ -39,6 +37,26 @@ Route::namespace('Admin')
 // Route::get('about', 'AboutController')->name('about');
 // Route::get('contact-us', 'ContactController@index')->name('contact');
 
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/session', 'HomeController@showRequest')->name('session');
+
+Route::get('/home', function () {
+    return redirect('profile');
+});
+
+Route::middleware('web')->group(function () {
+    Route::middleware('auth')
+    ->prefix('profile')
+    ->as('profile.')
+	->group(function () {
+        Route::get('', 'ProfileController@index')
+            ->name('home');
+        Route::get('info', 'ProfileController@info')
+            ->name('info');
+    });
+});
 // Еще какие-то маршруты....
 
 Route::fallback(function() {

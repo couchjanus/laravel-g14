@@ -23,6 +23,7 @@
 
         <div class="main-cont">
             @yield('breadcrumb')
+            @include('layouts.partials.admin._flash-message')
             @yield('content')
         </div>
 

@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -55,5 +56,15 @@ class User extends Authenticatable
     {
         return $query->withTrashed()->where('id', $id)->first();       
     }
- 
+
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    public function setPasswordAttribute($input)
+    {
+        if ($input)
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+    }
 }
