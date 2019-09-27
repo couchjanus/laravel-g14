@@ -38,6 +38,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|unique:categories|max:255',
+        //     'description' => 'nullable|string',
+        // ])->validate();
+
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|unique:categories|max:255|min:3',
+        //     'description' => 'nullable|string',
+        // ]);
+        // // Переданные данные не прошли проверку
+        // if ($validator->fails()) {
+        //     return redirect('admin/categories/create')
+        //             ->withErrors($validator)
+        //             ->withInput();
+        // }
+
+        // $validator->after(function ($validator) {
+        //     if ($this->somethingElseIsInvalid()) {
+        //         $validator->errors()->add('name', 'Something is wrong with this field!');
+        //     }
+        // });
+ 
+ 
         Category::create($request->all());
         return redirect(route('admin.categories.index'))->with('success', 'Category Created Successfully!');
     }

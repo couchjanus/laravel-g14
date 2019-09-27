@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
 use App\Enums\PostType;
+use Validator;
+use Auth;
+use App\Http\Requests\UpdatePostFormRequest;
 
 class PostController extends Controller
 {
@@ -55,12 +58,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:posts|max:255',
+            'content' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('admin.posts.create'))
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
         // Получить post или создать, если не существует...
         $post = Post::firstOrCreate([
             'title' => $request->title, 
             'content'=>$request->content, 
-            'status'=>$request->status, 'category_id'=>$request->category_id, 
-            'user_id'=>1]);
+            'status'=>$request->status, 
+            'category_id'=>$request->category_id, 
+            'user_id'=>Auth::id()]);
         
         return redirect(route('admin.posts.index'));
     }
@@ -87,7 +102,6 @@ class PostController extends Controller
         $categories = Category::pluck('name', 'id'); 
         $status = PostType::toSelectArray(); 
         return view('admin.posts.edit')->withTitle('Edit Post')->withPost($post)->withStatus($status)->withCategories($categories);
-
     }
 
     /**
@@ -97,13 +111,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostFormRequest $request, Post $post)
     {
         $post->updateOrCreate([
-            'title' => $request->title, 
-            'content'=>$request->content, 
-            'status'=>$request->status, 'category_id'=>$request->category_id, 
-            'user_id'=>1
+            'title'       => $request->title, 
+            'content'     => $request->content, 
+            'status'      => $request->status, 
+            'category_id' => $request->category_id, 
+            'user_id'     => Auth::id()
             ]);
         return redirect(route('admin.posts.index'));
     }

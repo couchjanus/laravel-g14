@@ -20,11 +20,17 @@ Route::group(['prefix' => 'blog'], function () {
     Route::get('/{slug}', 'BlogController@show')->name('blog.show');
 });
 
+Route::get('/feedback', 'FeedbackController@create');
+Route::post('/feedback/create', 'FeedbackController@store');
+
 Route::middleware('admin')->namespace('Admin')
     ->prefix('admin')
     ->as('admin.')
 	->group(function () {
-        Route::get('/', 'DashboardController'); 	 
+        Route::get('/', 'DashboardController');
+        Route::get('feedbacks', 'FeedbackController@index')->name('feedbacks.index');
+        Route::get('feedbacks/delete/{id}', 'FeedbackController@destroy');
+ 
         Route::get('posts/status', 'PostController@getPostsByStatus')->name('posts.status'); 	 
         Route::resource('posts', 'PostController');
         Route::resource('categories', 'CategoryController');
@@ -33,6 +39,8 @@ Route::middleware('admin')->namespace('Admin')
         Route::delete('users/force/{id}', 'UserController@force')->name('users.force');
     	Route::resource('users', 'UserController');
 });
+
+
 
 // Route::get('about', 'AboutController')->name('about');
 // Route::get('contact-us', 'ContactController@index')->name('contact');
