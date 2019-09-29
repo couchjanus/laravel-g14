@@ -1,22 +1,12 @@
-<!-- resources/views/blog/show.blade.php -->
 @extends('layouts.blog')
 
 @section('title')
-	Blog Post | {{ $post->title }}
+  {{$post->title}}
 @endsection
 
 @section('content')
-
-  <!-- Latest Posts -->
-  @include('blog.partials._single')
-    
-  @push('sidebar')
-    <li>Sidebar list item</li>
-  @endpush
-
-  @prepend('sidebar')
-    <li>First Sidebar Item</li>
-  @endprepend
-
-
+    <div class="blog-main">
+      @includeIf('blog.partials._single-post', ['post' => $post])
+      @includeWhen($hescomment, 'blog.partials._comments', ['some' => 'data'])
+    </div>
 @endsection

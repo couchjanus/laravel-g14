@@ -50,37 +50,56 @@
                 </div>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-category">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-category">
                     Category
-                </label>
-                <div class="relative">
-                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category_id">
-                        @foreach ($categories as $key => $value)
-                                <option value="{{ $key }}"
-                                    @if ($key == $post->category_id)
-                                        selected="selected"
-                                    @endif
-                                    >{{ $value }}</option>
-                        @endforeach
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </label>
+                    <div class="relative">
+                        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-category" name="category_id">
+                            @foreach ($categories as $key => $value)
+                                    <option value="{{ $key }}"
+                                        @if ($key == $post->category_id)
+                                            selected="selected"
+                                        @endif
+                                        >{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
                     </div>
                 </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <div class="relative">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-tag"">
+                        <span class="text-gray-700">Tags</span>
+                        <select class="form-multiselect block appearance-none w-full mt-1 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" multiple  name="tag[]">
+                            @foreach($tags as $key => $value)
+                                <option value="{{ $key }}"
+                                    {{ ($post->tags->pluck('id')->contains($key)) ? 'selected':'' }}  />
+                                    {{ $value }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </label>
+                    </div>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-active">
-                    Active
-                </label>
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-active">
+                        Active
+                    </label>
 
-                <input class="mr-2 leading-tight" type="checkbox" id="grid-active" name="published">
-                <span class="text-sm">
-                    Active
-                </span>
+                    <input class="mr-2 leading-tight" type="checkbox" id="grid-active" name="published">
+                    <span class="text-sm">
+                        Active
+                    </span>
+                </div>
             </div>
             <div class="md:flex md:items-center mb-2 mt-2 mx-auto">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Save</button>
-            </div>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Save</button>
+                </div>
         </form>
     </div>
     </div>   

@@ -15,9 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/get-by-category', function () {
+    $posts = App\Post::where('status', 2)
+    ->with('category')
+    ->get();
+    dump($posts);
+});
+
 Route::group(['prefix' => 'blog'], function () {
     Route::get('/', 'BlogController@index')->name('blog.index');
     Route::get('/{slug}', 'BlogController@show')->name('blog.show');
+    Route::get('category/{id}', 'BlogController@getPostsByCategory')->name('blog.category');
 });
 
 Route::get('/feedback', 'FeedbackController@create');
@@ -37,7 +45,8 @@ Route::middleware('admin')->namespace('Admin')
         Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
         Route::post('users/restore/{id}', 'UserController@restore')->name('users.restore');
         Route::delete('users/force/{id}', 'UserController@force')->name('users.force');
-    	Route::resource('users', 'UserController');
+        Route::resource('users', 'UserController');
+        Route::resource('tags', 'TagController');
 });
 
 
@@ -63,6 +72,8 @@ Route::middleware('web')->group(function () {
             ->name('home');
         Route::get('info', 'ProfileController@info')
             ->name('info');
+        Route::put('store', 'ProfileController@store')
+            ->name('store');
     });
 });
 // Еще какие-то маршруты....

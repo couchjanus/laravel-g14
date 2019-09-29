@@ -423,5 +423,6 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-plugins/pagination'),
+    require('tailwind-forms')(),
   ]
 }

@@ -14,4 +14,9 @@ class Category extends Model
 
     protected $dates = ['created_at', 'deleted_at']; 
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
 }

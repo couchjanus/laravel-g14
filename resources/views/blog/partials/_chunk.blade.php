@@ -4,8 +4,8 @@
     </div>
         <div class="post-details">
           <div class="post-meta d-flex justify-content-between">
-            <div class="date meta-last">{{ $post->created_at }}</div>
-            <div class="category"><a href="#">{{ $post->category_id }}</a></div>
+            <div class="date meta-last">Created By: {{ $post->user['name'] }} At: {{ $post->created_at }}</div>
+            <div class="category">With category: <a href="#">{{ $post->category['name'] }}</a></div>
           </div>
           <a href="/blog/{{ $post->slug }}">
             <h3 class="h4">{{ $post->title }}</h3>

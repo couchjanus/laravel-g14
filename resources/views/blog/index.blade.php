@@ -9,10 +9,14 @@
 <h1>{{ $title }}</h1>
 <div class="row">
     <!-- post -->
-    @each('blog.partials._chunk', 
-            $posts, 
-            'post', 
-            'blog.partials._post-none'
-        )
+    @forelse ($posts as $post)
+        @include('blog.partials._chunk')
+    @empty
+        @include('blog.partials._post-none')
+    @endforelse
 </div>
+<!-- Pagination -->
+{{-- {{ $posts->links() }} --}}
+{{-- {!! $posts->render() !!} --}}
+{{ $posts->onEachSide(2)->links() }}
 @endsection

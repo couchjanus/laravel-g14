@@ -31,7 +31,7 @@
                         <div class="card">
                             <div class="card-header bg-primary text-white">Contact Information</div>
                             <div class="card-body">
-                                <form action="" method="post">
+                                <form action="{{ route('profile.store') }}" method="post">
                                     @csrf
                                     @method('put')
 
@@ -53,28 +53,28 @@
                                         <label class="col-form-label col-md-3">First Name</label>
                                         <div class="col-md-9">
                                             <input type="text" name="first_name" class="form-control"
-                                                   value="">
+                                                   value="{{ Auth::user()->profile->first_name ?? 'empty'}}">
                                         </div>
                                     </div>
                                     <div class="form-group form-row">
                                         <label class="col-form-label col-md-3">Last Name</label>
                                         <div class="col-md-9">
                                             <input type="text" name="last_name" class="form-control"
-                                                   value="">
+                                                   value="{{ Auth::user()->profile->last_name ?? 'empty'}}">
                                         </div>
                                     </div>
                                     <div class="form-group form-row">
                                         <label class="col-form-label col-md-3">Location</label>
                                         <div class="col-md-9">
                                             <input type="text" name="location" class="form-control"
-                                                   value="">
+                                                   value="{{ Auth::user()->profile->location ?? 'empty'}}">
                                         </div>
                                     </div>
                                     <div class="form-group form-row">
                                         <label class="col-form-label col-md-3">Bio</label>
                                         <div class="col-md-9">
                                             <textarea name="bio" class="form-control">
-                                                
+                                                {{ Auth::user()->profile->bio ?? 'empty'}}
                                             </textarea>
                                         </div>
                                     </div>

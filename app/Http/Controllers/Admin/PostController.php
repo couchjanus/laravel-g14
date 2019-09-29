@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
+use App\Tag;
 use App\Enums\PostType;
 use Validator;
 use Auth;
@@ -46,8 +47,9 @@ class PostController extends Controller
     {
         $title = "Add New Post";
         $categories = Category::all(); 
+        $tags = Tag::all();
         $status = PostType::toSelectArray(); 
-        return view('admin.posts.create', compact('title'))->withStatus($status)->withCategories($categories);
+        return view('admin.posts.create', compact('title'))->withStatus($status)->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -69,15 +71,16 @@ class PostController extends Controller
                     ->withInput();
         }
 
-        // Получить post или создать, если не существует...
         $post = Post::firstOrCreate([
             'title' => $request->title, 
             'content'=>$request->content, 
             'status'=>$request->status, 
             'category_id'=>$request->category_id, 
             'user_id'=>Auth::id()]);
-        
-        return redirect(route('admin.posts.index'));
+
+        $post->tags()->sync((array)$request->input('tag'));
+
+        return redirect(route('admin.posts.index'))->with('message','Post has been added successfully');
     }
 
     /**
@@ -100,8 +103,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::pluck('name', 'id'); 
+        $tags = Tag::get()->pluck('name', 'id');
         $status = PostType::toSelectArray(); 
-        return view('admin.posts.edit')->withTitle('Edit Post')->withPost($post)->withStatus($status)->withCategories($categories);
+        return view('admin.posts.edit')->withTitle('Edit Post')->withPost($post)->withStatus($status)->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -113,14 +117,17 @@ class PostController extends Controller
      */
     public function update(UpdatePostFormRequest $request, Post $post)
     {
-        $post->updateOrCreate([
-            'title'       => $request->title, 
-            'content'     => $request->content, 
-            'status'      => $request->status, 
-            'category_id' => $request->category_id, 
-            'user_id'     => Auth::id()
-            ]);
-        return redirect(route('admin.posts.index'));
+        // $post->updateOrCreate([
+        //     'title'       => $request->title, 
+        //     'content'     => $request->content, 
+        //     'status'      => $request->status, 
+        //     'category_id' => $request->category_id, 
+        //     'user_id'     => Auth::id()
+        //     ]);
+
+        $post->update($request->all());
+        $post->tags()->sync((array)$request->input('tag'));
+        return redirect(route('admin.posts.index'))->with('message','Post has been updated successfully');
     }
 
     /**
@@ -131,7 +138,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $post->tags()->detach();
         $post->delete();
-        return redirect()->route('admin.posts.index');
+
+        return redirect()->route('admin.posts.index')
+            ->with('success','Post deleted successfully');
     }
 }

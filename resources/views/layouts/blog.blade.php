@@ -1,47 +1,43 @@
-<!-- Хранится в resources/views/layouts/blog.blade.php -->
-@extends('layouts.master')
-
-@section('meta')
-   <!-- Custom meta for this template -->
-   @include('layouts.partials.front._meta')
-@endsection
+@extends('layouts.front')
 
 @section('title')
-  @parent
-	 | Peculiar Blog
+   Blog Post Title
 @endsection
 
 @section('styles')
-   <!-- Custom styles for this template -->
-   @include('layouts.partials.front._styles')
+    <!-- Custom styles for this template -->
+    
 @endsection
 
-@section('navbar')
-<header class="header">
-    <!-- Main Navbar-->
-    @include('layouts.partials.front._navbar')      
-</header>
+@section('navigation')
+    @include('layouts.partials.frontend._navigation')
 @endsection
 
-@section('main')                    
-    <div class="container">
-      <div class="row">
-        <!-- Latest Posts -->
-        <main class="posts-listing col-lg-8"> 
-          <div class="container">
-            @yield('content')
-          </div>
-        </main>
-        <!-- Sidebar -->
-        @include('layouts.partials.front._sidebar')
-      </div>
-    </div>
+{{--Page--}}
+
+@section('page')
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                @yield('content')
+            </div><!-- /.blog-main -->
+            
+            @include('layouts.partials.frontend._aside')
+        </div><!-- /.row -->
+    </main><!-- /.container -->
 @endsection
-<!-- Page Footer-->
-@section('footer')                    
-   @include('layouts.partials.front._footer')      
+
+@section('footer')
+       @include('layouts.partials.frontend._footer') 
 @endsection
+
+{{--Scripts--}}
 @section('scripts')
-    <!-- Custom scripts for this template -->
-    @include('layouts.partials.front._scripts')
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+    <script src="{{ asset('js/app.js') }}" ></script>
 @endsection
