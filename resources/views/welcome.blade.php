@@ -94,6 +94,16 @@
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+                <div class="row">
+                    <div class='col'>
+                        <form action = "{{ route('reminder') }}" method="POST">
+                        @csrf
+                            <input type="email" name="email" placeholder="Email address">
+                            <input type="text" name="event" placeholder="Some event">
+                            <button type="submit">Send Me A Mail</button>
+                        </form> 
+                    </div>
+                </div>
             </div>
         </div>
     </body>
