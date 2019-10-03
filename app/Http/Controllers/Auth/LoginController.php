@@ -45,4 +45,13 @@ class LoginController extends Controller
             $user->save();
         }
     }
+
+    public function showLoginForm()
+    {
+        return view('auth.login',[
+            'title' => 'Login',
+            'loginRoute' => 'login',
+            'forgotPasswordRoute' => 'password.request',
+        ]);
+    }
 }

@@ -8,6 +8,17 @@ use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 {
     /**
+     * Only Authenticated users for "admin" guard 
+     * are allowed.
+     * 
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
+    /**
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
