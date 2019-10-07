@@ -44,6 +44,8 @@ Route::namespace('Admin')
         Route::delete('users/force/{id}', 'UserController@force')->name('users.force');
         Route::resource('users', 'UserController');
         Route::resource('tags', 'TagController');
+        Route::resource('permissions', 'PermissionController');
+        Route::resource('roles', 'RoleController');
 
         Route::get('invitations', 'InvitationsController@index')->name('showInvitations');
         Route::post('invite/{id}', 'InvitationsController@sendInvite')

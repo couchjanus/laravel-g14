@@ -33,8 +33,18 @@ class Admin extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function isAdmin()
+    public function posts()
     {
-        return $this->is_admin;
+        return $this->hasMany(Post::class);
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->is_super;
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }

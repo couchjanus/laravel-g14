@@ -11,6 +11,7 @@ use App\Enums\PostType;
 use Validator;
 use Auth;
 use App\Http\Requests\UpdatePostFormRequest;
+use Gate;
 
 class PostController extends Controller
 {
@@ -50,6 +51,23 @@ class PostController extends Controller
         $tags = Tag::all();
         $status = PostType::toSelectArray(); 
         return view('admin.posts.create', compact('title'))->withStatus($status)->withCategories($categories)->withTags($tags);
+
+        // $user = \Auth::user();
+        // if ($user->can('create', Post::class)) {
+        //     $categories = Category::all(); 
+        //     $status = PostType::toSelectArray(); 
+        //     $tags = Tag::all();
+        //     return view('admin.posts.create', compact('title'))->withStatus($status)->withCategories($categories)->withTags($tags);
+        // } else {
+        //     return redirect(route('admin.posts.index'))->with('warning','You can not create post');
+        // }
+        
+        // if ($this->authorize('create', Post::class)) {
+        //     echo 'Current logged in user is allowed to create new posts.';
+        // } else {
+        //     echo 'You can not create post';
+        // }
+        // exit;
     }
 
     /**
@@ -91,7 +109,18 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = \Auth::user();
+        if ($this->authorize('view', $post)) {
+            return view('admin.posts.show',compact('post'));
+        } else {
+            return redirect(route('admin.posts.index'))->with('warning','Not Allowed View Post');
+        }
+        // if ($user->can('view', $post)) {
+        //   echo "Current logged in user is allowed to update the Post: {$post->title}";
+        // } else {
+        //   echo 'Not Authorized.';
+        // }
+
     }
 
     /**
@@ -106,6 +135,15 @@ class PostController extends Controller
         $tags = Tag::get()->pluck('name', 'id');
         $status = PostType::toSelectArray(); 
         return view('admin.posts.edit')->withTitle('Edit Post')->withPost($post)->withStatus($status)->withCategories($categories)->withTags($tags);
+
+        // if (Gate::allows('update-post', $post)) {
+        //     $categories = Category::pluck('name', 'id'); 
+        //     $status = PostType::toSelectArray(); 
+        //     $tags = \App\Tag::get()->pluck('name', 'id');
+        //     return view('admin.posts.edit')->withTitle('Edit Post')->withPost($post)->withStatus($status)->withCategories($categories)->withTags($tags);
+        // } else {
+        //     return redirect(route('admin.posts.index'))->with('warning','Not Allowed Edit Post');
+        // }
     }
 
     /**
@@ -117,13 +155,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostFormRequest $request, Post $post)
     {
-        // $post->updateOrCreate([
-        //     'title'       => $request->title, 
-        //     'content'     => $request->content, 
-        //     'status'      => $request->status, 
-        //     'category_id' => $request->category_id, 
-        //     'user_id'     => Auth::id()
-        //     ]);
+        // $user = \Auth::user();
+        // if ($user->can('update', $post)) {
+        // $post->update($request->all());
+        // $post->tags()->sync((array)$request->input('tag'));
+        // return redirect(route('admin.posts.index'))->with('message','Post has been updated successfully');
+        // } else {
+        //     return redirect(route('admin.posts.index'))->with('warning',"Current logged in user is not allowed to update the Post: {$post->id}");
+        // }
 
         $post->update($request->all());
         $post->tags()->sync((array)$request->input('tag'));
@@ -143,5 +182,26 @@ class PostController extends Controller
 
         return redirect()->route('admin.posts.index')
             ->with('success','Post deleted successfully');
+
+        // $user = Auth::user();
+        
+        // if ($user->can('delete', $post)) {
+        //     $post->tags()->detach();
+        //     $post->delete();
+        //     return redirect()->route('admin.posts.index')->with('success','Post deleted successfully');
+        // } else {
+        //     return redirect()->route('admin.posts.index')->with('warning','Пользователь '.$user->name.' не может удалять статью...');
+        // }
+        
+        // if (Gate::forUser($user)->denies('destroy-post', $post)) {
+        //     // Пользователь не может удалять статью...
+        //     // dd('Пользователь '.$user->name.' не может удалять статью...');
+        //     return redirect()->route('posts.index')->with('warning','Пользователь '.$user->name.' не может удалять статью...');
+        // } else {
+        // $post->tags()->detach();
+        // $post->delete();
+        // return redirect()->route('posts.index')->with('type','success')->with('message','Post deleted successfully');
+        // }
+
     }
 }

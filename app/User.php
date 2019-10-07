@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 
+
 // class User extends Authenticatable implements MustVerifyEmail
 
 class User extends Authenticatable
@@ -85,5 +86,10 @@ class User extends Authenticatable
     public function social()
     {
         return $this->hasMany(Social::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }
