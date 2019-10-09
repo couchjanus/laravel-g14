@@ -72,7 +72,9 @@ Route::namespace('Admin')
 
 });
 
-
+Route::get('comments', 'CommentController@index')->name('comments');
+Route::get('comments/{id}', 'CommentController@postsById')->name('comments.by.id');
+Route::post('comments', 'CommentController@store')->name('comments.store');
 
 // Route::get('about', 'AboutController')->name('about');
 // Route::get('contact-us', 'ContactController@index')->name('contact');

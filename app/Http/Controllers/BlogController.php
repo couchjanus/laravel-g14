@@ -12,7 +12,6 @@ class BlogController extends Controller
     public function index()   
     {
         $posts = Post::paginate();
- 
         return view('blog.index', compact('posts'))->withTitle('Awesome Blog');
     }
 
@@ -24,8 +23,8 @@ class BlogController extends Controller
         }
         
         $post = Post::whereSlug($slug)->firstOrFail();
-        $post->update(['visited'=>$post->visited+1]);
-        return view('blog.show', ['post' => $post, 'hescomment'=>true]);
+        // $post->update(['visited'=>$post->visited+1]);
+        return view('blog.show', ['post' => $post, 'hascomments'=>true]);
     }
 
     public function getPostsByCategory($categoryId)   {

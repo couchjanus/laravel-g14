@@ -7,6 +7,7 @@
 @section('content')
     <div class="blog-main">
       @includeIf('blog.partials._single-post', ['post' => $post])
-      @includeWhen($hescomment, 'blog.partials._comments', ['some' => 'data'])
+      {{-- comments --}}
+      @includeWhen($hascomments, 'blog.partials._comments', ['post_id' => $post->id])
     </div>
 @endsection

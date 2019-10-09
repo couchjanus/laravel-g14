@@ -38,8 +38,5 @@
       <div class="post-tags">
         <a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a>
       </div>
-      {{-- comments --}}
-      @includeWhen($hascomment, 'blog.partials._comments', ['some' => 'data'])
-      {{-- @include('blog.partials._comments') --}}
     </div>
   </div>
