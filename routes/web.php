@@ -11,9 +11,12 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::get('register/request', 'Auth\RegisterController@requestInvitation')->name('requestInvitation');
 
@@ -42,6 +45,17 @@ Route::namespace('Admin')
         Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
         Route::post('users/restore/{id}', 'UserController@restore')->name('users.restore');
         Route::delete('users/force/{id}', 'UserController@force')->name('users.force');
+
+        Route::any('users/search',function(Request $request){
+            $q = $request->q;
+            $users = App\User::where('name','LIKE','%'.$q.'%')->orWhere('email','LIKE','%'.$q.'%')->paginate();
+            if(count($users) > 0) {
+                return view('admin.users.index', compact('users', 'q'))->withTitle('Users Management');
+            } else {
+                  return redirect(route('admin.users.index'))->withWarning('No Details found. Try to search again !');
+            }
+        });
+        
         Route::resource('users', 'UserController');
         Route::resource('tags', 'TagController');
         Route::resource('permissions', 'PermissionController');
@@ -79,7 +93,7 @@ Route::post('comments', 'CommentController@store')->name('comments.store');
 // Route::get('about', 'AboutController')->name('about');
 // Route::get('contact-us', 'ContactController@index')->name('contact');
 
-// Auth::routes();
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', function () {
@@ -106,8 +120,26 @@ Route::middleware('web')->group(function () {
 Route::get('social/{provider}', 'Auth\SocialController@redirect')->name('social.redirect');
 Route::get('social/{provider}/callback', 'Auth\SocialController@callback')->name('social.callback');
 
+
+Route::get('/search', function (\App\Repositories\ElasticsearchArticleRepositoryInterface $repository) {
+   
+   $articles = $repository->search((string) request('q'));
+
+   // dump($articles);
+   return view('articles.index', [
+       'posts' => $articles,
+       'title' => 'Awesome Blog'
+   ]);
+})->name("repo.search");
+
+
+Route::get('articles', 'ArticleController@index')->name('articles.index');
+Route::get('articles/{id}','ArticleController@show')->name('articles.show'); 
+
+
 // Еще какие-то маршруты....
 
 Route::fallback(function() {
     return "Oops… How you've trapped here?";
 });
+

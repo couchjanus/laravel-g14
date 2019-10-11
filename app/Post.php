@@ -7,14 +7,27 @@ use App\Scopes\TitleScope;
 use Illuminate\Database\Eloquent\Builder;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
     use Sluggable;
-
+    use Searchable;
+    
     protected $fillable = [
         'title', 'content', 'status', 'category_id', 'user_id', 'published'
     ];
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'posts';
+    }
+
     /**
     * Scope a query to only include posts of a given type.
     *

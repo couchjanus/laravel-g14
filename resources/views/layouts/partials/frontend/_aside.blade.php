@@ -5,8 +5,13 @@
         </div>
 
         <div class="p-3">
-            <h4 class="font-italic">Archives</h4>
-            
+            <h4 class="font-italic">Search the blog</h4>
+            <form action="#" class="search-form"  action="{{ url('/search') }}" method="get">
+              <div class="form-group">
+                <input type="search" placeholder="What are you looking for?"  name="q" value="{{ request('q') }}">
+                <button type="submit" class="submit"><i class="icon-search"></i>Go!</button>
+              </div>
+            </form>
         </div>
 
         <div class="p-3">
